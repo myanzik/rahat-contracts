@@ -10,7 +10,7 @@ import "./Rahat.sol";
 /// @author Rumsan Associates
 /// @notice You can use this contract to manage Rahat tokens and projects
 /// @dev All function calls are only executed by contract owner
-contract RahatAdmin is ERC1155Holder {
+contract RahatAdmin is ERC1155Holder, Multicall {
   using EnumerableSet for EnumerableSet.UintSet;
 
   event ProjectERC20BudgetUpdated(
@@ -207,7 +207,6 @@ contract RahatAdmin is ERC1155Holder {
     returns (uint256 _balance)
   {
     bytes32 _id = findHash(_projectId);
-    require(projectExists[_id], "RAHAT_ADMIN: Invalid ProjectID");
     return (rahatContract.getProjectBalance(_id));
   }
 
@@ -220,7 +219,6 @@ contract RahatAdmin is ERC1155Holder {
     returns (uint256 _balance)
   {
     bytes32 _id = findHash(_projectId);
-    require(projectExists[_id], "RAHAT_ADMIN: Invalid ProjectID");
     return (rahatContract.getProjectBalance(_id, tokenId));
   }
 

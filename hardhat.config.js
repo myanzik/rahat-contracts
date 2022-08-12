@@ -3,6 +3,7 @@
  */
  require("@nomiclabs/hardhat-truffle5");
  require("solidity-coverage")
+ require("hardhat-gas-reporter");
 
  module.exports = {
   solidity: {
@@ -14,4 +15,9 @@
       },
     },
   },
+  gasReporter: {
+    enabled: true,
+    currency: 'USD',
+    gasPrice: 21
+  }
 };

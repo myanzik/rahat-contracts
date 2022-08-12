@@ -3,6 +3,15 @@ const Rahat = artifacts.require("Rahat");
 const RahatERC20 = artifacts.require("RahatERC20");
 const RahatERC1155 = artifacts.require("RahatERC1155");
 
+
+const getInterface = (contractName,functionName) => {
+  const {abi}  = require(`../artifacts/contracts/${contractName}.sol/${contractName}`)
+  if(!abi) throw Error("Contract Not Found");
+  const interface = abi.find((el)=> el.name === functionName);
+  console.log({interface})
+  return interface 
+}
+
 describe("Rahat contract", function() {
   let rahatERC20;
   let rahatERC1155;
@@ -79,6 +88,19 @@ describe("Rahat contract", function() {
 
      });
 
+     it("Should get Project ERC20 balances",async function() {
+      const callData1 = web3.eth.abi.encodeFunctionCall(getInterface('RahatAdmin','getProjecERC20Balance'),['project1']);
+
+      const results = await rahatAdmin.multicall.call([callData1]);
+      console.log({results});
+      const balances = results.map((el) => {
+        const d = web3.eth.abi.decodeParameter('uint256',el)
+        return d;
+      })
+      balances.map((el) => {
+        assert.equal(el,10000)
+      })
+    })
 
   });
 
